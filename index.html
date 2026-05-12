@@ -34,95 +34,124 @@
         body.spanish { background-color: var(--bg-spanish); color: var(--text-spanish); }
 
         h1 {
-            margin: 0 0 20px 0;
-            font-size: 1.6rem;
-            letter-spacing: 2px;
-            opacity: 0.7;
+            margin: 0 0 40px 0;
+            font-size: 2.2rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
         }
 
-        .language-switcher, .dialect-switcher {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 50px; /* Duża przestrzeń nad słowem */
+        /* Styl dla Dropdownu Języków */
+        .lang-select-wrapper {
+            margin-bottom: 30px;
         }
 
-        .main-lang-btn, .dialect-btn {
-            min-width: 110px;
-            height: 42px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.8rem;
+        #langSelect {
+            padding: 12px 25px;
+            font-family: 'Special Elite', monospace;
+            font-size: 1.3rem;
             background: #000;
             color: #fff;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.3);
+            border: 2px solid #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        body.spanish #langSelect {
+            background: #fff;
+            color: #000;
+            border: 2px solid #000;
+        }
+
+        /* Styl dla Dialektów (USA/UK) */
+        .dialect-switcher {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .dialect-btn {
+            min-width: 140px;
+            height: 55px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1.1rem;
+            background: #333;
+            color: #fff;
+            box-shadow: 0 5px 0 rgba(0,0,0,0.4);
             transition: all 0.2s;
         }
 
         .dialect-btn.active {
             background: #D9171A;
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.5);
         }
 
+        /* Główne Słowo */
         .flashcard {
-            margin-bottom: 50px; /* Duża przestrzeń pod słowem */
-            min-height: 100px;
+            margin-bottom: 60px;
+            min-height: 160px;
         }
 
         #currentWord {
-            font-size: clamp(1.8rem, 7vw, 3rem); /* Zmniejszony font */
+            font-size: clamp(3rem, 12vw, 5.5rem); /* Powiększony font */
             margin: 0;
-            text-transform: lowercase; /* Małe litery */
-            letter-spacing: 1px;
+            text-transform: lowercase;
+            letter-spacing: 2px;
         }
 
         #phoneticTranscription {
-            font-size: clamp(1.1rem, 4vw, 2rem);
+            font-size: clamp(1.5rem, 6vw, 3rem);
             color: var(--accent-english);
-            margin-top: 8px;
+            margin-top: 20px;
         }
 
         body.spanish #phoneticTranscription { color: var(--accent-spanish); }
 
         #contextInfo {
-            margin-top: 12px;
-            font-size: 0.7rem;
+            margin-top: 15px;
+            font-size: 1rem;
             text-transform: uppercase;
-            opacity: 0.5;
+            opacity: 0.7;
         }
 
+        /* Przyciski Sterowania */
         .control-btn {
-            height: 55px;
+            height: 70px;
             border: none;
-            border-radius: 6px;
+            border-radius: 12px;
             cursor: pointer;
             font-family: inherit;
-            font-size: 0.95rem;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.3);
+            font-size: 1.3rem;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.4);
+            font-weight: bold;
         }
 
         #playAudioButton {
             width: 100%;
-            max-width: 340px;
-            margin-bottom: 15px;
+            max-width: 400px;
+            margin-bottom: 25px;
             background: #D9171A;
             color: #fff;
         }
 
         .nav {
             display: flex;
-            gap: 12px;
+            gap: 20px;
             width: 100%;
-            max-width: 340px;
+            max-width: 400px;
         }
 
-        .nav button { flex: 1; background: #333; color: white; }
+        .nav button { flex: 1; background: #222; color: white; }
+        body.spanish .nav button { background: #fff; color: #000; }
 
-        .main-lang-btn:active, .dialect-btn:active, .control-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 rgba(0,0,0,0.3);
+        .dialect-btn:active, .control-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.4);
         }
     </style>
 </head>
@@ -130,9 +159,11 @@
 
     <h1>PRO!NUNCIA</h1>
 
-    <div class="language-switcher">
-        <button id="englishSectionButton" class="main-lang-btn">EN 🇺🇸</button>
-        <button id="spanishSectionButton" class="main-lang-btn">ES 🇪🇸</button>
+    <div class="lang-select-wrapper">
+        <select id="langSelect">
+            <option value="EN">English 🇺🇸🇬🇧</option>
+            <option value="ES">Español 🇪🇸🌎</option>
+        </select>
     </div>
 
     <div class="dialect-switcher">
@@ -164,6 +195,7 @@
         const ctxEl = document.getElementById("contextInfo");
         const d1Btn = document.getElementById("dialect1Btn");
         const d2Btn = document.getElementById("dialect2Btn");
+        const langSelect = document.getElementById("langSelect");
 
         function filtered() {
             return DATA.filter(x => x.lang === currentLanguage);
@@ -198,40 +230,31 @@
             const item = list[currentIndex];
             if (!item) return;
 
-            // Wybieramy ścieżkę z JSON
             let rawPath = currentLanguage === "EN" 
                 ? (selectedDialect === "1" ? item.audio_us : item.audio_uk)
                 : (selectedDialect === "1" ? item.audio_es : item.audio_latam);
 
             if (rawPath) {
                 let cleanPath = rawPath.trim();
-                
-                // POPRAWKA ŚCIEŻKI DATASET:
-                // Jeśli ścieżka w JSON to np. "audio/uk/0001.mp3", 
-                // a plik jest w "dataset/audio/uk/0001.mp3", dodajemy brakujący człon.
                 if (!cleanPath.startsWith('dataset/') && !cleanPath.startsWith('./dataset/')) {
                     cleanPath = 'dataset/' + cleanPath;
                 }
-
-                // Dodajemy ./ na początku dla GitHuba
                 if (!cleanPath.startsWith('./')) {
                     cleanPath = './' + cleanPath;
                 }
                 
-                console.log("Próba odtworzenia:", cleanPath);
                 const audio = new Audio(cleanPath);
-                audio.play().catch(err => {
-                    console.error("Audio error:", cleanPath, err);
-                });
+                audio.play().catch(err => console.error("Audio error:", cleanPath, err));
             }
         }
 
-        function setLang(l) {
-            currentLanguage = l;
+        // Obsługa zmiany języka w dropdownie
+        langSelect.onchange = (e) => {
+            currentLanguage = e.target.value;
             currentIndex = 0;
-            document.body.className = l === "EN" ? "english" : "spanish";
+            document.body.className = currentLanguage === "EN" ? "english" : "spanish";
             render();
-        }
+        };
 
         document.getElementById("nextButton").onclick = () => {
             const list = filtered();
@@ -250,8 +273,6 @@
         };
 
         document.getElementById("playAudioButton").onclick = play;
-        document.getElementById("englishSectionButton").onclick = () => setLang("EN");
-        document.getElementById("spanishSectionButton").onclick = () => setLang("ES");
 
         document.querySelectorAll(".dialect-btn").forEach(b => {
             b.onclick = () => {
@@ -260,7 +281,6 @@
             };
         });
 
-        // Wczytywanie JSON
         fetch("./words.json?v=" + Date.now())
             .then(r => r.json())
             .then(d => {
