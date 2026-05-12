@@ -10,15 +10,12 @@
             --bg-english: #111;
             --text-english: #ffffff;
             --accent-english: #F8AC10;
-
             --bg-spanish: #F8AC10;
             --text-spanish: #000000;
             --accent-spanish: #D9171A;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
@@ -28,98 +25,87 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            overflow-x: hidden;
             text-align: center;
             font-family: 'Special Elite', monospace;
             transition: background-color 0.4s ease, color 0.4s ease;
         }
 
-        body.english {
-            background-color: var(--bg-english);
-            color: var(--text-english);
-        }
-
-        body.spanish {
-            background-color: var(--bg-spanish);
-            color: var(--text-spanish);
-        }
+        body.english { background-color: var(--bg-english); color: var(--text-english); }
+        body.spanish { background-color: var(--bg-spanish); color: var(--text-spanish); }
 
         h1 {
-            margin: 10px 0 30px 0;
-            font-size: clamp(2rem, 5vw, 2.8rem);
+            margin: 0 0 30px 0;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            opacity: 0.8;
         }
 
         .language-switcher, .dialect-switcher {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 50px; /* Zwiększona przestrzeń między przyciskami a słowem */
         }
 
         .main-lang-btn, .dialect-btn {
-            min-width: 140px;
-            height: 50px;
+            min-width: 120px;
+            height: 45px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             font-family: inherit;
-            font-size: 1rem;
+            font-size: 0.85rem;
             background: #000;
             color: #fff;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.25);
+            box-shadow: 0 4px 0 rgba(0,0,0,0.3);
             transition: all 0.2s;
         }
 
-        /* Styl dla aktywnego dialektu */
         .dialect-btn.active {
             background: #D9171A;
             transform: scale(1.05);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-        }
-
-        .main-lang-btn:active, .dialect-btn:active, .control-btn:active {
-            transform: translateY(2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
         }
 
         .flashcard {
-            margin-bottom: 30px;
+            margin-bottom: 60px; /* Przestrzeń pod słowem */
+            min-height: 120px;
         }
 
         #currentWord {
-            font-size: clamp(2.5rem, 10vw, 6rem);
+            font-size: clamp(2rem, 8vw, 3.5rem); /* Zmniejszony rozmiar fontu */
             margin: 0;
-            text-transform: uppercase;
+            text-transform: lowercase; /* Małe litery */
+            letter-spacing: 1px;
         }
 
         #phoneticTranscription {
-            font-size: clamp(1.5rem, 6vw, 3.5rem);
+            font-size: clamp(1.2rem, 5vw, 2.2rem);
             color: var(--accent-english);
             margin-top: 10px;
         }
 
-        body.spanish #phoneticTranscription {
-            color: var(--accent-spanish);
-        }
+        body.spanish #phoneticTranscription { color: var(--accent-spanish); }
 
         #contextInfo {
             margin-top: 15px;
-            font-size: 1rem;
-            font-weight: bold;
-            letter-spacing: 1px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            opacity: 0.6;
         }
 
         .control-btn {
-            height: 60px;
+            height: 55px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             font-family: inherit;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.25);
+            font-size: 1rem;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.3);
         }
 
         #playAudioButton {
             width: 100%;
-            max-width: 400px;
+            max-width: 350px;
             margin-bottom: 15px;
             background: #D9171A;
             color: #fff;
@@ -129,24 +115,24 @@
             display: flex;
             gap: 15px;
             width: 100%;
-            max-width: 400px;
+            max-width: 350px;
         }
 
-        .nav button {
-            flex: 1;
-            background: #444;
-            color: white;
+        .nav button { flex: 1; background: #333; color: white; }
+
+        .main-lang-btn:active, .dialect-btn:active, .control-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.3);
         }
     </style>
 </head>
-
 <body class="english">
 
     <h1>PRO!NUNCIA</h1>
 
     <div class="language-switcher">
-        <button id="englishSectionButton" class="main-lang-btn">English 🇺🇸🇬🇧</button>
-        <button id="spanishSectionButton" class="main-lang-btn">Español 🇪🇸🌎</button>
+        <button id="englishSectionButton" class="main-lang-btn">EN 🇺🇸</button>
+        <button id="spanishSectionButton" class="main-lang-btn">ES 🇪🇸</button>
     </div>
 
     <div class="dialect-switcher">
@@ -155,7 +141,7 @@
     </div>
 
     <div class="flashcard">
-        <h2 id="currentWord">Loading...</h2>
+        <div id="currentWord">loading...</div>
         <div id="phoneticTranscription"></div>
         <div id="contextInfo"></div>
     </div>
@@ -163,8 +149,8 @@
     <button id="playAudioButton" class="control-btn">PLAY AUDIO 🎧</button>
 
     <div class="nav">
-        <button id="prevButton" class="control-btn">Prev</button>
-        <button id="nextButton" class="control-btn">Next</button>
+        <button id="prevButton" class="control-btn">PREV</button>
+        <button id="nextButton" class="control-btn">NEXT</button>
     </div>
 
     <script>
@@ -185,28 +171,23 @@
 
         function render() {
             const list = filtered();
-            if (!list || list.length === 0) {
-                wordEl.textContent = "No data...";
-                return;
-            }
+            if (!list || list.length === 0) return;
 
             const item = list[currentIndex];
             wordEl.textContent = item.word;
 
-            // Logika ES / LATAM
             if (currentLanguage === "EN") {
-                ipaEl.textContent = selectedDialect === "1" ? (item.ipa_us || "N/A") : (item.ipa_uk || "N/A");
+                ipaEl.textContent = selectedDialect === "1" ? (item.ipa_us || "") : (item.ipa_uk || "");
                 d1Btn.textContent = "USA 🇺🇸";
                 d2Btn.textContent = "UK 🇬🇧";
-                ctxEl.textContent = selectedDialect === "1" ? "AMERICAN ENGLISH" : "BRITISH ENGLISH";
+                ctxEl.textContent = selectedDialect === "1" ? "American" : "British";
             } else {
-                ipaEl.textContent = selectedDialect === "1" ? (item.ipa_es || "N/A") : (item.ipa_latam || "N/A");
+                ipaEl.textContent = selectedDialect === "1" ? (item.ipa_es || "") : (item.ipa_latam || "");
                 d1Btn.textContent = "Spain 🇪🇸";
                 d2Btn.textContent = "LATAM 🌎";
-                ctxEl.textContent = selectedDialect === "1" ? "ESPAÑOL (ESPAÑA)" : "ESPAÑOL (LATAM)";
+                ctxEl.textContent = selectedDialect === "1" ? "Castellano" : "Latino";
             }
 
-            // Podświetlanie przycisków
             document.querySelectorAll('.dialect-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.dialect === selectedDialect);
             });
@@ -217,16 +198,22 @@
             const item = list[currentIndex];
             if (!item) return;
 
-            let file;
-            if (currentLanguage === "EN") {
-                file = selectedDialect === "1" ? item.audio_us : item.audio_uk;
-            } else {
-                file = selectedDialect === "1" ? item.audio_es : item.audio_latam;
-            }
+            let path = currentLanguage === "EN" 
+                ? (selectedDialect === "1" ? item.audio_us : item.audio_uk)
+                : (selectedDialect === "1" ? item.audio_es : item.audio_latam);
 
-            if (file) {
-                const audio = new Audio(file);
-                audio.play().catch(err => console.warn("Audio file missing:", file));
+            if (path) {
+                // Czyścimy ścieżkę (GitHub Pages Fix)
+                let cleanPath = path.trim();
+                if (!cleanPath.startsWith('http') && !cleanPath.startsWith('./') && !cleanPath.startsWith('/')) {
+                    cleanPath = './' + cleanPath;
+                }
+                
+                console.log("Próba odtworzenia:", cleanPath);
+                const audio = new Audio(cleanPath);
+                audio.play().catch(err => {
+                    console.error("Błąd audio:", err);
+                });
             }
         }
 
@@ -239,14 +226,18 @@
 
         document.getElementById("nextButton").onclick = () => {
             const list = filtered();
-            currentIndex = (currentIndex + 1) % list.length;
-            render();
+            if(list.length) {
+                currentIndex = (currentIndex + 1) % list.length;
+                render();
+            }
         };
 
         document.getElementById("prevButton").onclick = () => {
             const list = filtered();
-            currentIndex = (currentIndex - 1 + list.length) % list.length;
-            render();
+            if(list.length) {
+                currentIndex = (currentIndex - 1 + list.length) % list.length;
+                render();
+            }
         };
 
         document.getElementById("playAudioButton").onclick = play;
@@ -260,15 +251,15 @@
             };
         });
 
-        // Pobieranie danych
-        fetch("words.json")
+        // Ładowanie JSON z wymuszonym brakiem pamięci podręcznej (cache), aby GitHub odświeżał dane
+        fetch("./words.json?v=" + new Date().getTime())
             .then(r => r.json())
             .then(d => {
                 DATA = d;
                 render();
             })
             .catch(e => {
-                wordEl.textContent = "JSON Error";
+                wordEl.textContent = "JSON Load Error";
                 console.error(e);
             });
     </script>
