@@ -1,0 +1,92 @@
+[
+  {
+    "id": "0001",
+    "word": "schedule",
+    "lang": "EN",
+    "ipa_us": "ˈskedʒuːl",
+    "ipa_uk": "ˈʃedjuːl",
+    "audio_us": "audio/us/0001.mp3",
+    "audio_uk": "audio/uk/0001.mp3"
+  },
+  {
+    "id": "0002",
+    "word": "progress",
+    "lang": "EN",
+    "ipa_us": "ˈprɑːɡres",
+    "ipa_uk": "ˈprəʊɡres",
+    "audio_us": "audio/us/0002.mp3",
+    "audio_uk": "audio/uk/0002.mp3"
+  },
+  {
+    "id": "0003",
+    "word": "process",
+    "lang": "EN",
+    "ipa_us": "ˈprɑːses",
+    "ipa_uk": "ˈprəʊses",
+    "audio_us": "audio/us/0003.mp3",
+    "audio_uk": "audio/uk/0003.mp3"
+  },
+  {
+    "id": "0004",
+    "word": "quarter",
+    "lang": "EN",
+    "ipa_us": "ˈkwɔːrtər",
+    "ipa_uk": "ˈkwɔːtə",
+    "audio_us": "audio/us/0004.mp3",
+    "audio_uk": "audio/uk/0004.mp3"
+  },
+  {
+    "id": "0005",
+    "word": "priorities",
+    "lang": "EN",
+    "ipa_us": "praɪˈɔːrɪtiz",
+    "ipa_uk": "praɪˈɒrɪtiz",
+    "audio_us": "audio/us/0005.mp3",
+    "audio_uk": "audio/uk/0005.mp3"
+  },
+  {
+    "id": "0006",
+    "word": "thoroughly",
+    "lang": "EN",
+    "ipa_us": "ˈθɜːroʊli",
+    "ipa_uk": "ˈθʌrəli",
+    "audio_us": "audio/us/0006.mp3",
+    "audio_uk": "audio/uk/0006.mp3"
+  },
+  {
+    "id": "0007",
+    "word": "direct",
+    "lang": "EN",
+    "ipa_us": "dɪˈrekt",
+    "ipa_uk": "daɪˈrekt",
+    "audio_us": "audio/us/0007.mp3",
+    "audio_uk": "audio/uk/0007.mp3"
+  },
+  {
+    "id": "0008",
+    "word": "creative",
+    "lang": "EN",
+    "ipa_us": "kriˈeɪtɪv",
+    "ipa_uk": "kriˈeɪtɪv",
+    "audio_us": "audio/us/0008.mp3",
+    "audio_uk": "audio/uk/0008.mp3"
+  },
+  {
+    "id": "0009",
+    "word": "supervisor",
+    "lang": "EN",
+    "ipa_us": "ˈsuːpərvaɪzər",
+    "ipa_uk": "ˈsuːpəvaɪzə",
+    "audio_us": "audio/us/0009.mp3",
+    "audio_uk": "audio/uk/0009.mp3"
+  },
+  {
+    "id": "0010",
+    "word": "hierarchy",
+    "lang": "EN",
+    "ipa_us": "ˈhaɪərɑːrki",
+    "ipa_uk": "ˈhaɪərɑːki",
+    "audio_us": "audio/us/0010.mp3",
+    "audio_uk": "audio/uk/0010.mp3"
+  }
+]
