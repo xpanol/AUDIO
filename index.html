@@ -1,250 +1,276 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="pl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PRO!NUNCIA LIKE A PRO!</title>
+    <link href="https://fonts.googleapis.com/css?family=Special+Elite&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --bg-english: #111;
+            --text-english: #ffffff;
+            --accent-english: #F8AC10;
 
-<title>PRO!NUNCIA LIKE A PRO!</title>
+            --bg-spanish: #F8AC10;
+            --text-spanish: #000000;
+            --accent-spanish: #D9171A;
+        }
 
-<link href="https://fonts.googleapis.com/css?family=Special+Elite&display=swap" rel="stylesheet" />
+        * {
+            box-sizing: border-box;
+        }
 
-<style>
+        body {
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            text-align: center;
+            font-family: 'Special Elite', monospace;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
 
-:root {
-    --bg-english: #111;
-    --text-english: #ffffff;
-    --accent-english: #F8AC10;
+        body.english {
+            background-color: var(--bg-english);
+            color: var(--text-english);
+        }
 
-    --bg-spanish: #F8AC10;
-    --text-spanish: #000000;
-    --accent-spanish: #D9171A;
-}
+        body.spanish {
+            background-color: var(--bg-spanish);
+            color: var(--text-spanish);
+        }
 
-* {
-    box-sizing: border-box;
-}
+        h1 {
+            margin: 10px 0 30px 0;
+            font-size: clamp(2rem, 5vw, 2.8rem);
+        }
 
-body {
-    margin: 0;
-    padding: 20px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow-x: hidden;
-    text-align: center;
-    font-family: 'Special Elite', monospace;
-    transition: 0.4s ease;
-}
+        .language-switcher, .dialect-switcher {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
 
-body.english {
-    background-color: var(--bg-english);
-    color: var(--text-english);
-}
+        .main-lang-btn, .dialect-btn {
+            min-width: 140px;
+            height: 50px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+            background: #000;
+            color: #fff;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.25);
+            transition: all 0.2s;
+        }
 
-body.spanish {
-    background-color: var(--bg-spanish);
-    color: var(--text-spanish);
-}
+        /* Styl dla aktywnego dialektu */
+        .dialect-btn.active {
+            background: #D9171A;
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
 
-h1 {
-    margin: 10px 0 30px 0;
-    font-size: clamp(2rem, 5vw, 2.8rem);
-}
+        .main-lang-btn:active, .dialect-btn:active, .control-btn:active {
+            transform: translateY(2px);
+        }
 
-.language-switcher {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 30px;
-}
+        .flashcard {
+            margin-bottom: 30px;
+        }
 
-.main-lang-btn {
-    min-width: 140px;
-    height: 55px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 1.1rem;
-    background: #000;
-    color: #fff;
-    box-shadow: 0 4px 0 rgba(0,0,0,0.25);
-}
+        #currentWord {
+            font-size: clamp(2.5rem, 10vw, 6rem);
+            margin: 0;
+            text-transform: uppercase;
+        }
 
-.main-lang-btn:active {
-    transform: translateY(2px);
-}
+        #phoneticTranscription {
+            font-size: clamp(1.5rem, 6vw, 3.5rem);
+            color: var(--accent-english);
+            margin-top: 10px;
+        }
 
-.flashcard {
-    margin-bottom: 30px;
-}
+        body.spanish #phoneticTranscription {
+            color: var(--accent-spanish);
+        }
 
-#currentWord {
-    font-size: clamp(3rem, 10vw, 8rem);
-}
+        #contextInfo {
+            margin-top: 15px;
+            font-size: 1rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
 
-#phoneticTranscription {
-    font-size: clamp(2rem, 6vw, 5rem);
-    color: #F8AC10;
-}
+        .control-btn {
+            height: 60px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.25);
+        }
 
-.control-btn {
-    height: 60px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 1.2rem;
-    box-shadow: 0 4px 0 rgba(0,0,0,0.25);
-}
+        #playAudioButton {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 15px;
+            background: #D9171A;
+            color: #fff;
+        }
 
-.control-btn:active {
-    transform: translateY(2px);
-}
+        .nav {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
+        }
 
-#playAudioButton {
-    width: 100%;
-    margin-bottom: 15px;
-    background: #D9171A;
-    color: #fff;
-}
-
-.nav {
-    display: flex;
-    gap: 15px;
-    width: 100%;
-}
-
-.nav button {
-    width: 48%;
-}
-
-</style>
-
+        .nav button {
+            flex: 1;
+            background: #444;
+            color: white;
+        }
+    </style>
 </head>
 
 <body class="english">
 
-<h1>PRO!NUNCIA</h1>
+    <h1>PRO!NUNCIA</h1>
 
-<div class="language-switcher">
+    <div class="language-switcher">
+        <button id="englishSectionButton" class="main-lang-btn">English 🇺🇸🇬🇧</button>
+        <button id="spanishSectionButton" class="main-lang-btn">Español 🇪🇸🌎</button>
+    </div>
 
-    <button id="englishSectionButton" class="main-lang-btn">English 🇺🇸🇬🇧</button>
-    <button id="spanishSectionButton" class="main-lang-btn">Español 🇪🇸🇲🇽</button>
+    <div class="dialect-switcher">
+        <button class="dialect-btn active" data-dialect="1" id="dialect1Btn">USA</button>
+        <button class="dialect-btn" data-dialect="2" id="dialect2Btn">UK</button>
+    </div>
 
-</div>
+    <div class="flashcard">
+        <h2 id="currentWord">Loading...</h2>
+        <div id="phoneticTranscription"></div>
+        <div id="contextInfo"></div>
+    </div>
 
-<div class="flashcard">
+    <button id="playAudioButton" class="control-btn">PLAY AUDIO 🎧</button>
 
-    <div id="currentWord">Loading...</div>
-    <div id="phoneticTranscription"></div>
-    <div id="contextInfo"></div>
+    <div class="nav">
+        <button id="prevButton" class="control-btn">Prev</button>
+        <button id="nextButton" class="control-btn">Next</button>
+    </div>
 
-</div>
+    <script>
+        let DATA = [];
+        let currentIndex = 0;
+        let currentLanguage = "EN";
+        let selectedDialect = "1"; 
 
-<button id="playAudioButton" class="control-btn">PLAY AUDIO 🎧</button>
+        const wordEl = document.getElementById("currentWord");
+        const ipaEl = document.getElementById("phoneticTranscription");
+        const ctxEl = document.getElementById("contextInfo");
+        const d1Btn = document.getElementById("dialect1Btn");
+        const d2Btn = document.getElementById("dialect2Btn");
 
-<div class="nav">
-    <button id="prevButton" class="control-btn">Prev</button>
-    <button id="nextButton" class="control-btn">Next</button>
-</div>
+        function filtered() {
+            return DATA.filter(x => x.lang === currentLanguage);
+        }
 
-<script>
+        function render() {
+            const list = filtered();
+            if (!list || list.length === 0) {
+                wordEl.textContent = "No data...";
+                return;
+            }
 
-let DATA = [];
-let currentIndex = 0;
-let currentLanguage = "EN";
-let selectedDialect = "1";
+            const item = list[currentIndex];
+            wordEl.textContent = item.word;
 
-const wordEl = document.getElementById("currentWord");
-const ipaEl = document.getElementById("phoneticTranscription");
-const ctxEl = document.getElementById("contextInfo");
+            // Logika ES / LATAM
+            if (currentLanguage === "EN") {
+                ipaEl.textContent = selectedDialect === "1" ? (item.ipa_us || "N/A") : (item.ipa_uk || "N/A");
+                d1Btn.textContent = "USA 🇺🇸";
+                d2Btn.textContent = "UK 🇬🇧";
+                ctxEl.textContent = selectedDialect === "1" ? "AMERICAN ENGLISH" : "BRITISH ENGLISH";
+            } else {
+                ipaEl.textContent = selectedDialect === "1" ? (item.ipa_es || "N/A") : (item.ipa_latam || "N/A");
+                d1Btn.textContent = "Spain 🇪🇸";
+                d2Btn.textContent = "LATAM 🌎";
+                ctxEl.textContent = selectedDialect === "1" ? "ESPAÑOL (ESPAÑA)" : "ESPAÑOL (LATAM)";
+            }
 
-function filtered() {
-    return DATA.filter(x => x.lang === currentLanguage);
-}
+            // Podświetlanie przycisków
+            document.querySelectorAll('.dialect-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.dialect === selectedDialect);
+            });
+        }
 
-function render() {
+        function play() {
+            const list = filtered();
+            const item = list[currentIndex];
+            if (!item) return;
 
-    const list = filtered();
-    const item = list[currentIndex];
+            let file;
+            if (currentLanguage === "EN") {
+                file = selectedDialect === "1" ? item.audio_us : item.audio_uk;
+            } else {
+                file = selectedDialect === "1" ? item.audio_es : item.audio_latam;
+            }
 
-    if (!item) return;
+            if (file) {
+                const audio = new Audio(file);
+                audio.play().catch(err => console.warn("Audio file missing:", file));
+            }
+        }
 
-    wordEl.textContent = item.word;
+        function setLang(l) {
+            currentLanguage = l;
+            currentIndex = 0;
+            document.body.className = l === "EN" ? "english" : "spanish";
+            render();
+        }
 
-    ipaEl.textContent =
-        selectedDialect === "2"
-            ? item.ipa_uk
-            : item.ipa_us;
+        document.getElementById("nextButton").onclick = () => {
+            const list = filtered();
+            currentIndex = (currentIndex + 1) % list.length;
+            render();
+        };
 
-    ctxEl.textContent =
-        currentLanguage + " | " +
-        (selectedDialect === "1" ? "US" : "UK");
-}
+        document.getElementById("prevButton").onclick = () => {
+            const list = filtered();
+            currentIndex = (currentIndex - 1 + list.length) % list.length;
+            render();
+        };
 
-function play() {
+        document.getElementById("playAudioButton").onclick = play;
+        document.getElementById("englishSectionButton").onclick = () => setLang("EN");
+        document.getElementById("spanishSectionButton").onclick = () => setLang("ES");
 
-    const list = filtered();
-    const item = list[currentIndex];
+        document.querySelectorAll(".dialect-btn").forEach(b => {
+            b.onclick = () => {
+                selectedDialect = b.dataset.dialect;
+                render();
+            };
+        });
 
-    if (!item) return;
-
-    const file =
-        selectedDialect === "2"
-            ? item.audio_uk
-            : item.audio_us;
-
-    new Audio(file).play();
-}
-
-function next() {
-    const list = filtered();
-    currentIndex = (currentIndex + 1) % list.length;
-    render();
-}
-
-function prev() {
-    const list = filtered();
-    currentIndex = (currentIndex - 1 + list.length) % list.length;
-    render();
-}
-
-function setLang(l) {
-    currentLanguage = l;
-    currentIndex = 0;
-    document.body.className = l === "EN" ? "english" : "spanish";
-    render();
-}
-
-document.getElementById("nextButton").onclick = next;
-document.getElementById("prevButton").onclick = prev;
-document.getElementById("playAudioButton").onclick = play;
-
-document.getElementById("englishSectionButton").onclick =
-    () => setLang("EN");
-
-document.getElementById("spanishSectionButton").onclick =
-    () => setLang("ES");
-
-document.querySelectorAll("[data-dialect]").forEach(b => {
-    b.onclick = () => {
-        selectedDialect = b.dataset.dialect;
-        render();
-    };
-});
-
-fetch("words.json")
-    .then(r => r.json())
-    .then(d => {
-        DATA = d;
-        render();
-    })
-    .catch(e => console.error(e));
-
-</script>
-
+        // Pobieranie danych
+        fetch("words.json")
+            .then(r => r.json())
+            .then(d => {
+                DATA = d;
+                render();
+            })
+            .catch(e => {
+                wordEl.textContent = "JSON Error";
+                console.error(e);
+            });
+    </script>
 </body>
 </html>
