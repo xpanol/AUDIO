@@ -34,26 +34,26 @@
         body.spanish { background-color: var(--bg-spanish); color: var(--text-spanish); }
 
         h1 {
-            margin: 0 0 30px 0;
-            font-size: 1.8rem;
+            margin: 0 0 20px 0;
+            font-size: 1.6rem;
             letter-spacing: 2px;
-            opacity: 0.8;
+            opacity: 0.7;
         }
 
         .language-switcher, .dialect-switcher {
             display: flex;
             gap: 12px;
-            margin-bottom: 50px; /* Zwiększona przestrzeń między przyciskami a słowem */
+            margin-bottom: 50px; /* Duża przestrzeń nad słowem */
         }
 
         .main-lang-btn, .dialect-btn {
-            min-width: 120px;
-            height: 45px;
+            min-width: 110px;
+            height: 42px;
             border: none;
             border-radius: 6px;
             cursor: pointer;
             font-family: inherit;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             background: #000;
             color: #fff;
             box-shadow: 0 4px 0 rgba(0,0,0,0.3);
@@ -67,30 +67,30 @@
         }
 
         .flashcard {
-            margin-bottom: 60px; /* Przestrzeń pod słowem */
-            min-height: 120px;
+            margin-bottom: 50px; /* Duża przestrzeń pod słowem */
+            min-height: 100px;
         }
 
         #currentWord {
-            font-size: clamp(2rem, 8vw, 3.5rem); /* Zmniejszony rozmiar fontu */
+            font-size: clamp(1.8rem, 7vw, 3rem); /* Zmniejszony font */
             margin: 0;
             text-transform: lowercase; /* Małe litery */
             letter-spacing: 1px;
         }
 
         #phoneticTranscription {
-            font-size: clamp(1.2rem, 5vw, 2.2rem);
+            font-size: clamp(1.1rem, 4vw, 2rem);
             color: var(--accent-english);
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
         body.spanish #phoneticTranscription { color: var(--accent-spanish); }
 
         #contextInfo {
-            margin-top: 15px;
-            font-size: 0.75rem;
+            margin-top: 12px;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            opacity: 0.6;
+            opacity: 0.5;
         }
 
         .control-btn {
@@ -99,13 +99,13 @@
             border-radius: 6px;
             cursor: pointer;
             font-family: inherit;
-            font-size: 1rem;
+            font-size: 0.95rem;
             box-shadow: 0 4px 0 rgba(0,0,0,0.3);
         }
 
         #playAudioButton {
             width: 100%;
-            max-width: 350px;
+            max-width: 340px;
             margin-bottom: 15px;
             background: #D9171A;
             color: #fff;
@@ -113,9 +113,9 @@
 
         .nav {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             width: 100%;
-            max-width: 350px;
+            max-width: 340px;
         }
 
         .nav button { flex: 1; background: #333; color: white; }
@@ -198,21 +198,30 @@
             const item = list[currentIndex];
             if (!item) return;
 
-            let path = currentLanguage === "EN" 
+            // Wybieramy ścieżkę z JSON
+            let rawPath = currentLanguage === "EN" 
                 ? (selectedDialect === "1" ? item.audio_us : item.audio_uk)
                 : (selectedDialect === "1" ? item.audio_es : item.audio_latam);
 
-            if (path) {
-                // Czyścimy ścieżkę (GitHub Pages Fix)
-                let cleanPath = path.trim();
-                if (!cleanPath.startsWith('http') && !cleanPath.startsWith('./') && !cleanPath.startsWith('/')) {
+            if (rawPath) {
+                let cleanPath = rawPath.trim();
+                
+                // POPRAWKA ŚCIEŻKI DATASET:
+                // Jeśli ścieżka w JSON to np. "audio/uk/0001.mp3", 
+                // a plik jest w "dataset/audio/uk/0001.mp3", dodajemy brakujący człon.
+                if (!cleanPath.startsWith('dataset/') && !cleanPath.startsWith('./dataset/')) {
+                    cleanPath = 'dataset/' + cleanPath;
+                }
+
+                // Dodajemy ./ na początku dla GitHuba
+                if (!cleanPath.startsWith('./')) {
                     cleanPath = './' + cleanPath;
                 }
                 
                 console.log("Próba odtworzenia:", cleanPath);
                 const audio = new Audio(cleanPath);
                 audio.play().catch(err => {
-                    console.error("Błąd audio:", err);
+                    console.error("Audio error:", cleanPath, err);
                 });
             }
         }
@@ -251,8 +260,8 @@
             };
         });
 
-        // Ładowanie JSON z wymuszonym brakiem pamięci podręcznej (cache), aby GitHub odświeżał dane
-        fetch("./words.json?v=" + new Date().getTime())
+        // Wczytywanie JSON
+        fetch("./words.json?v=" + Date.now())
             .then(r => r.json())
             .then(d => {
                 DATA = d;
