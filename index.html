@@ -33,107 +33,90 @@
         body.english { background-color: var(--bg-english); color: var(--text-english); }
         body.spanish { background-color: var(--bg-spanish); color: var(--text-spanish); }
 
-        h1 {
-            margin: 0 0 40px 0;
-            font-size: 2.2rem;
-            letter-spacing: 4px;
+        /* Tytuł dwuliniowy */
+        .title-container {
+            margin-bottom: 40px;
+            color: #fff; /* Zawsze biały */
             text-transform: uppercase;
+            line-height: 1.1;
         }
+        .title-main { font-size: 3rem; letter-spacing: 5px; display: block; }
+        .title-sub { font-size: 1.5rem; letter-spacing: 3px; display: block; opacity: 0.9; }
 
-        /* Styl dla Dropdownu Języków */
-        .lang-select-wrapper {
-            margin-bottom: 30px;
-        }
-
+        /* Dropdown Języków */
+        .lang-select-wrapper { margin-bottom: 30px; }
         #langSelect {
-            padding: 12px 25px;
+            padding: 15px 30px;
             font-family: 'Special Elite', monospace;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             background: #000;
             color: #fff;
-            border: 2px solid #fff;
-            border-radius: 10px;
+            border: 3px solid #fff;
+            border-radius: 12px;
             cursor: pointer;
             outline: none;
         }
 
-        body.spanish #langSelect {
-            background: #fff;
-            color: #000;
-            border: 2px solid #000;
-        }
-
-        /* Styl dla Dialektów (USA/UK) */
+        /* Dialekty */
         .dialect-switcher {
             display: flex;
             gap: 20px;
-            margin-bottom: 60px;
+            margin-bottom: 50px;
         }
-
         .dialect-btn {
-            min-width: 140px;
-            height: 55px;
+            min-width: 150px;
+            height: 60px;
             border: none;
             border-radius: 10px;
             cursor: pointer;
             font-family: inherit;
-            font-size: 1.1rem;
-            background: #333;
+            font-size: 1.2rem;
+            background: #222;
             color: #fff;
-            box-shadow: 0 5px 0 rgba(0,0,0,0.4);
-            transition: all 0.2s;
+            box-shadow: 0 5px 0 rgba(0,0,0,0.5);
+            transition: all 0.1s;
         }
-
         .dialect-btn.active {
             background: #D9171A;
-            color: white;
-            transform: scale(1.1);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
         }
 
-        /* Główne Słowo */
-        .flashcard {
-            margin-bottom: 60px;
-            min-height: 160px;
-        }
-
+        /* Flashcard */
+        .flashcard { margin-bottom: 50px; min-height: 180px; }
         #currentWord {
-            font-size: clamp(3rem, 12vw, 5.5rem); /* Powiększony font */
+            font-size: clamp(3.5rem, 15vw, 6.5rem);
             margin: 0;
             text-transform: lowercase;
             letter-spacing: 2px;
         }
-
         #phoneticTranscription {
-            font-size: clamp(1.5rem, 6vw, 3rem);
+            font-size: clamp(1.8rem, 7vw, 3.5rem);
             color: var(--accent-english);
             margin-top: 20px;
         }
-
         body.spanish #phoneticTranscription { color: var(--accent-spanish); }
-
-        #contextInfo {
-            margin-top: 15px;
-            font-size: 1rem;
-            text-transform: uppercase;
-            opacity: 0.7;
-        }
+        #contextInfo { margin-top: 15px; font-size: 1.1rem; text-transform: uppercase; opacity: 0.8; }
 
         /* Przyciski Sterowania */
         .control-btn {
-            height: 70px;
+            height: 80px;
             border: none;
-            border-radius: 12px;
+            border-radius: 15px;
             cursor: pointer;
             font-family: inherit;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             box-shadow: 0 6px 0 rgba(0,0,0,0.4);
             font-weight: bold;
+            transition: background-color 0.2s, transform 0.1s;
         }
+
+        /* Efekt kliknięcia (Flash) */
+        .btn-flash { background-color: #fff !important; color: #000 !important; }
 
         #playAudioButton {
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
             margin-bottom: 25px;
             background: #D9171A;
             color: #fff;
@@ -143,21 +126,22 @@
             display: flex;
             gap: 20px;
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
         }
-
-        .nav button { flex: 1; background: #222; color: white; }
-        body.spanish .nav button { background: #fff; color: #000; }
+        .nav button { flex: 1; background: #333; color: white; }
 
         .dialect-btn:active, .control-btn:active {
-            transform: translateY(3px);
+            transform: translateY(4px);
             box-shadow: 0 2px 0 rgba(0,0,0,0.4);
         }
     </style>
 </head>
 <body class="english">
 
-    <h1>PRO!NUNCIA</h1>
+    <div class="title-container">
+        <span class="title-main">PRO!NUNCIA</span>
+        <span class="title-sub">LIKE A PRO!</span>
+    </div>
 
     <div class="lang-select-wrapper">
         <select id="langSelect">
@@ -203,7 +187,16 @@
 
         function render() {
             const list = filtered();
-            if (!list || list.length === 0) return;
+            
+            if (!list || list.length === 0) {
+                wordEl.textContent = "no data";
+                ipaEl.textContent = "";
+                ctxEl.textContent = "";
+                return;
+            }
+
+            // Resetuj index jeśli wyjdzie poza zakres po zmianie języka
+            if (currentIndex >= list.length) currentIndex = 0;
 
             const item = list[currentIndex];
             wordEl.textContent = item.word;
@@ -225,10 +218,17 @@
             });
         }
 
+        function flashButton(btn) {
+            btn.classList.add('btn-flash');
+            setTimeout(() => btn.classList.remove('btn-flash'), 200);
+        }
+
         function play() {
             const list = filtered();
             const item = list[currentIndex];
             if (!item) return;
+
+            flashButton(document.getElementById("playAudioButton"));
 
             let rawPath = currentLanguage === "EN" 
                 ? (selectedDialect === "1" ? item.audio_us : item.audio_uk)
@@ -239,16 +239,13 @@
                 if (!cleanPath.startsWith('dataset/') && !cleanPath.startsWith('./dataset/')) {
                     cleanPath = 'dataset/' + cleanPath;
                 }
-                if (!cleanPath.startsWith('./')) {
-                    cleanPath = './' + cleanPath;
-                }
+                if (!cleanPath.startsWith('./')) cleanPath = './' + cleanPath;
                 
                 const audio = new Audio(cleanPath);
                 audio.play().catch(err => console.error("Audio error:", cleanPath, err));
             }
         }
 
-        // Obsługa zmiany języka w dropdownie
         langSelect.onchange = (e) => {
             currentLanguage = e.target.value;
             currentIndex = 0;
@@ -256,7 +253,8 @@
             render();
         };
 
-        document.getElementById("nextButton").onclick = () => {
+        document.getElementById("nextButton").onclick = function() {
+            flashButton(this);
             const list = filtered();
             if(list.length) {
                 currentIndex = (currentIndex + 1) % list.length;
@@ -264,7 +262,8 @@
             }
         };
 
-        document.getElementById("prevButton").onclick = () => {
+        document.getElementById("prevButton").onclick = function() {
+            flashButton(this);
             const list = filtered();
             if(list.length) {
                 currentIndex = (currentIndex - 1 + list.length) % list.length;
