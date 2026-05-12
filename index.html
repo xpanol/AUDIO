@@ -22,7 +22,9 @@
 
 /* ================= BASE ================= */
 
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
 body {
     margin: 0;
@@ -33,7 +35,7 @@ body {
     justify-content: center;
     align-items: center;
     font-family: 'Special Elite', monospace;
-    transition: 0.3s ease;
+    transition: 0.25s ease;
 }
 
 /* ================= THEMES ================= */
@@ -55,19 +57,7 @@ h1 {
     margin-bottom: 30px;
 }
 
-/* ================= BUTTONS (RESTORED EXACT SIZE) ================= */
-
-.main-lang-btn {
-    min-width: 140px;
-    height: 55px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 1.1rem;
-    background: #000;
-    color: #fff;
-}
+/* ================= LANGUAGE BUTTONS ================= */
 
 .language-switcher {
     display: flex;
@@ -75,16 +65,32 @@ h1 {
     margin-bottom: 30px;
 }
 
-.lang-group { position: relative; }
+.lang-group {
+    position: relative;
+}
 
-/* ================= CONTROL BUTTONS (FIXED SIZE) ================= */
+.main-lang-btn {
+    min-width: 140px;
+    height: 55px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Special Elite', monospace;
+    font-size: 1.1rem;
+    background: #000;
+    color: #fff;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.25);
+}
+
+/* ================= CONTROL BUTTONS ================= */
 
 .control-btn {
     height: 60px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    font-family: inherit;
+    font-family: 'Special Elite', monospace;
     font-size: 1.2rem;
     box-shadow: 0 4px 0 rgba(0,0,0,0.25);
     transition: 0.15s ease;
@@ -99,13 +105,13 @@ h1 {
     box-shadow: 0 2px 0 rgba(0,0,0,0.25);
 }
 
-/* NAV BUTTONS KEEP ORIGINAL SIZE */
+/* NAV */
 
 .nav-btn {
     width: 48%;
 }
 
-/* ================= AUDIO BUTTON ================= */
+/* AUDIO */
 
 #playAudioButton {
     width: 100%;
@@ -149,6 +155,7 @@ h1 {
     flex-direction: column;
     background: #fff;
     border: 2px solid #000;
+    z-index: 100;
 }
 
 .dialect-menu.show {
@@ -160,6 +167,7 @@ h1 {
     border: none;
     cursor: pointer;
     background: #fff;
+    font-family: inherit;
 }
 
 </style>
@@ -212,14 +220,14 @@ h1 {
 
 /* ================= STATE ================= */
 
-let data = [];
-let i = 0;
+let DATA = [];
+let index = 0;
 let lang = "EN";
 let dialect = "UK";
 
 /* ================= LOAD ================= */
 
-async function load() {
+async function loadData() {
 
     const res = await fetch("dataset/metadata/words.csv");
     const text = await res.text();
@@ -227,65 +235,75 @@ async function load() {
     const rows = text.trim().split("\n");
     const headers = rows[0].split(",");
 
-    data = rows.slice(1).map(r => {
+    DATA = rows.slice(1).map(r => {
         const v = r.split(",");
         const o = {};
-        headers.forEach((h, i) => o[h.trim()] = v[i]?.trim());
+        headers.forEach((h,i)=> o[h.trim()] = v[i]?.trim());
         return o;
     });
 
     render();
 }
 
+/* ================= FILTER ================= */
+
+function filtered() {
+    return DATA.filter(w => w.lang === lang);
+}
+
 /* ================= RENDER ================= */
 
 function render() {
 
-    const w = data[i];
+    const list = filtered();
+    const w = list[index];
+
     if (!w) return;
 
     document.getElementById("currentWord").textContent = w.word;
 
     document.getElementById("phoneticTranscription").textContent =
-        (dialect === "US" ? w.ipa2 : w.ipa) || w.ipa || "";
+        dialect === "US"
+            ? (w.ipa2 || w.ipa || "")
+            : (w.ipa || "");
 
     document.getElementById("contextInfo").textContent =
         `${lang} | ${dialect}`;
 }
 
-/* ================= AUDIO (ROBUST) ================= */
+/* ================= AUDIO ================= */
 
 function playAudio() {
 
-    const w = data[i];
+    const w = filtered()[index];
 
-    const path =
+    const file =
         dialect === "US"
             ? w.us_audio
             : w.uk_audio;
 
-    if (!path) return;
+    if (!file) return;
 
-    new Audio(path).play();
+    new Audio(file).play();
 }
 
 /* ================= NAV ================= */
 
 function next() {
-    i = (i + 1) % data.length;
+    index = (index + 1) % filtered().length;
     render();
 }
 
 function prev() {
-    i = (i - 1 + data.length) % data.length;
+    index = (index - 1 + filtered().length) % filtered().length;
     render();
 }
 
-/* ================= UI FEEDBACK ================= */
+/* ================= FEEDBACK ================= */
 
 function flash(btn) {
     btn.classList.add("active-click");
-    setTimeout(() => btn.classList.remove("active-click"), 120);
+    setTimeout(()=>btn.classList.remove("active-click"),120);
 }
 
 /* ================= EVENTS ================= */
@@ -305,24 +323,27 @@ document.getElementById("playAudioButton").onclick = e => {
     playAudio();
 };
 
-/* ================= LANG ================= */
+/* ================= LANGUAGE ================= */
 
 document.getElementById("engBtn").onclick = e => {
     toggle("engMenu");
     lang = "EN";
     document.body.className = "english";
+    index = 0;
+    render();
 };
 
 document.getElementById("esBtn").onclick = e => {
     toggle("esMenu");
     lang = "ES";
     document.body.className = "spanish";
+    index = 0;
+    render();
 };
 
 /* ================= MENUS ================= */
 
 function toggle(id) {
-
     document.querySelectorAll(".dialect-menu")
         .forEach(m => m.classList.remove("show"));
 
@@ -343,7 +364,7 @@ window.onclick = () => {
 
 /* ================= INIT ================= */
 
-load();
+loadData();
 
 </script>
 
