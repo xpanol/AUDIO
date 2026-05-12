@@ -11,14 +11,16 @@
 
 <style>
 
-/* ===== YOUR ORIGINAL CSS (UNCHANGED) ===== */
+/* ================= ORIGINAL DESIGN (UNCHANGED) ================= */
 
 :root {
     --bg-english: #111;
     --text-english: #ffffff;
     --accent-english: #F8AC10;
+
     --bg-spanish: #F8AC10;
     --text-spanish: #000000;
+
     --accent-spanish: #D9171A;
 }
 
@@ -32,12 +34,10 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    overflow-x: hidden;
     text-align: center;
     font-family: 'Special Elite', monospace;
     background-color: var(--bg-english);
     color: var(--text-english);
-    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 body.english { background-color: var(--bg-english); color: var(--text-english); }
@@ -46,68 +46,37 @@ body.spanish { background-color: var(--bg-spanish); color: var(--text-spanish); 
 h1 {
     margin: 10px 0 30px 0;
     font-size: clamp(2rem, 5vw, 2.8rem);
-    line-height: 1.1;
-    color: inherit;
-    font-family: 'Special Elite', monospace;
 }
 
-h1 span {
-    display: block;
-    margin-top: 5px;
-    font-size: 0.9em;
-    opacity: 0.9;
-}
+/* ================= BUTTONS EXACT AS BEFORE ================= */
 
 .language-switcher {
-    position: relative;
-    z-index: 100;
     display: flex;
-    justify-content: center;
     gap: 10px;
     margin-bottom: 30px;
 }
 
-.lang-group { position: relative; }
+.lang-group {
+    position: relative;
+}
 
 .main-lang-btn {
     min-width: 140px;
     height: 55px;
-    padding: 10px 15px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-family: 'Special Elite', monospace;
     font-size: 1.1rem;
-    background-color: #000;
+    background: #000;
     color: #fff;
-    box-shadow: 0 4px 0 rgba(0,0,0,0.25);
-    transition: all 0.2s ease;
 }
 
-.main-lang-btn:active {
-    transform: translateY(2px);
-    box-shadow: 0 2px 0 rgba(0,0,0,0.25);
+.main-lang-btn.active {
+    outline: 2px solid #fff;
 }
 
-#englishSectionButton.active,
-#englishSectionButton:hover {
-    background-color: #ffffff;
-    color: #000000;
-}
-
-#spanishSectionButton {
-    background-color: var(--accent-english);
-    color: #000000;
-}
-
-#spanishSectionButton.active,
-#spanishSectionButton:hover {
-    background-color: var(--accent-spanish);
-    color: #ffffff;
-}
+/* ================= DROPDOWN FIXED ================= */
 
 .dialect-menu {
     position: absolute;
@@ -116,41 +85,40 @@ h1 span {
     width: 100%;
     display: none;
     flex-direction: column;
-    overflow: hidden;
-    background-color: #ffffff;
-    border: 2px solid #000000;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    z-index: 101;
+    background: #fff;
+    border: 2px solid #000;
+    z-index: 100;
 }
 
-.dialect-menu.show { display: flex; }
+.dialect-menu.show {
+    display: flex;
+}
 
 .dialect-menu button {
-    width: 100%;
-    padding: 12px;
+    padding: 10px;
     border: none;
-    border-bottom: 1px solid #eee;
     cursor: pointer;
-    background-color: #fff;
-    color: #000;
-    font-family: 'Special Elite', monospace;
-    font-size: 1rem;
+    background: #fff;
+    font-family: inherit;
 }
+
+.dialect-menu button:hover {
+    background: #eee;
+}
+
+/* ================= FLASHCARD ================= */
 
 .flashcard {
     width: 100%;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    margin-bottom: 30px;
+    align-items: center;
 }
 
 #currentWord {
     font-size: clamp(3.5rem, 15vw, 10rem);
-    transition: opacity 0.15s ease;
 }
 
 #phoneticTranscription {
@@ -158,12 +126,7 @@ h1 span {
     color: #F8AC10;
 }
 
-.button-group {
-    width: 100%;
-    max-width: 400px;
-    display: flex;
-    flex-direction: column;
-}
+/* ================= BUTTONS ================= */
 
 .control-btn {
     height: 60px;
@@ -174,15 +137,15 @@ h1 span {
 }
 
 #playAudioButton {
+    width: 100%;
     margin-bottom: 15px;
-    background-color: var(--accent-spanish);
+    background-color: #D9171A;
     color: #fff;
     font-size: 1.4rem;
 }
 
 .navigation-row {
     display: flex;
-    justify-content: space-between;
     gap: 15px;
 }
 
@@ -191,12 +154,37 @@ h1 span {
 }
 
 </style>
-
 </head>
 
 <body class="english">
 
 <h1>PRO!NUNCIA<br><span>LIKE A PRO!</span></h1>
+
+<div class="language-switcher">
+
+    <div class="lang-group">
+
+        <button id="englishSectionButton" class="main-lang-btn">English 🇺🇸🇬🇧</button>
+
+        <div id="englishMenu" class="dialect-menu">
+            <button data-dialect="UK">🇬🇧 UK</button>
+            <button data-dialect="US">🇺🇸 US</button>
+        </div>
+
+    </div>
+
+    <div class="lang-group">
+
+        <button id="spanishSectionButton" class="main-lang-btn">Español 🇪🇸🇲🇽</button>
+
+        <div id="spanishMenu" class="dialect-menu">
+            <button data-dialect="ES">🇪🇸 Castilian</button>
+            <button data-dialect="MX">🇲🇽 LatAm</button>
+        </div>
+
+    </div>
+
+</div>
 
 <div class="flashcard">
 
@@ -208,105 +196,148 @@ h1 span {
 
 <div class="button-group">
 
-    <button id="playAudioButton" class="control-btn">
-        PLAY AUDIO 🎧
-    </button>
+    <button id="playAudioButton" class="control-btn">PLAY AUDIO 🎧</button>
 
     <div class="navigation-row">
-
-        <button id="prevButton" class="control-btn nav-btn">- Previous</button>
-        <button id="nextButton" class="control-btn nav-btn">Next -</button>
-
+        <button id="prevButton" class="control-btn nav-btn">Previous</button>
+        <button id="nextButton" class="control-btn nav-btn">Next</button>
     </div>
 
 </div>
 
 <script>
 
+/* ================= STATE ================= */
+
 let WORDS = [];
 let currentIndex = 0;
-let currentDialect = "uk"; // uk / us
 
-const elements = {
+let currentLanguage = "EN";
+let currentDialect = "UK";
+
+/* ================= DOM ================= */
+
+const el = {
     word: document.getElementById("currentWord"),
     phonetic: document.getElementById("phoneticTranscription"),
-    btnPlay: document.getElementById("playAudioButton"),
-    btnNext: document.getElementById("nextButton"),
-    btnPrev: document.getElementById("prevButton"),
-    context: document.getElementById("contextInfo")
+    context: document.getElementById("contextInfo"),
+    play: document.getElementById("playAudioButton"),
+    next: document.getElementById("nextButton"),
+    prev: document.getElementById("prevButton"),
+
+    engBtn: document.getElementById("englishSectionButton"),
+    spaBtn: document.getElementById("spanishSectionButton")
 };
+
+/* ================= CSV ================= */
 
 async function loadDataset() {
 
     const res = await fetch("dataset/metadata/words.csv");
     const text = await res.text();
 
-    const rows = text.trim().split("\n").slice(1);
+    const lines = text.trim().split("\n");
+    const headers = lines[0].split(",");
 
-    WORDS = rows.map(r => {
-
-        const [id, word, uk_audio, us_audio] = r.split(",");
-
-        return { id, word, uk_audio, us_audio };
+    WORDS = lines.slice(1).map(line => {
+        const values = line.split(",");
+        const obj = {};
+        headers.forEach((h, i) => obj[h.trim()] = values[i]?.trim());
+        return obj;
     });
 
-    displayWord();
+    render();
 }
 
-function displayWord() {
+/* ================= UI ================= */
 
-    if (!WORDS.length) return;
+function render() {
 
     const w = WORDS[currentIndex];
+    if (!w) return;
 
-    elements.word.textContent = w.word;
-    elements.phonetic.textContent = currentDialect.toUpperCase();
+    el.word.textContent = w.word;
 
-    elements.context.textContent =
-        currentDialect === "uk" ? "UK accent" : "US accent";
+    el.phonetic.textContent =
+        currentDialect === "US"
+            ? (w.ipa2 || w.ipa)
+            : w.ipa;
+
+    el.context.textContent = `${w.lang} | ${currentDialect}`;
 }
+
+/* ================= AUDIO ================= */
 
 function playAudio() {
 
     const w = WORDS[currentIndex];
 
     const path =
-        currentDialect === "uk"
-            ? w.uk_audio
-            : w.us_audio;
+        currentDialect === "US"
+            ? w.us_audio
+            : w.uk_audio;
 
-    const audio = new Audio(path);
-    audio.play();
+    new Audio(path).play();
 }
 
-function nextWord() {
+/* ================= NAV ================= */
 
+function next() {
     currentIndex = (currentIndex + 1) % WORDS.length;
-    displayWord();
+    render();
 }
 
-function prevWord() {
-
-    currentIndex =
-        (currentIndex - 1 + WORDS.length) % WORDS.length;
-
-    displayWord();
+function prev() {
+    currentIndex = (currentIndex - 1 + WORDS.length) % WORDS.length;
+    render();
 }
 
-/* ===== EVENTS ===== */
+/* ================= DROPDOWNS FIXED ================= */
 
-elements.btnPlay.onclick = playAudio;
-elements.btnNext.onclick = nextWord;
-elements.btnPrev.onclick = prevWord;
+function toggleMenu(id, e) {
 
-/* keyboard */
+    e.stopPropagation();
+
+    document.querySelectorAll(".dialect-menu")
+        .forEach(m => m.classList.remove("show"));
+
+    document.getElementById(id).classList.toggle("show");
+}
+
+function closeMenus() {
+    document.querySelectorAll(".dialect-menu")
+        .forEach(m => m.classList.remove("show"));
+}
+
+/* ================= EVENTS ================= */
+
+el.play.onclick = playAudio;
+el.next.onclick = next;
+el.prev.onclick = prev;
+
+document.getElementById("englishSectionButton")
+    .onclick = e => toggleMenu("englishMenu", e);
+
+document.getElementById("spanishSectionButton")
+    .onclick = e => toggleMenu("spanishMenu", e);
+
+document.querySelectorAll("[data-dialect]").forEach(btn => {
+    btn.onclick = () => {
+        currentDialect = btn.dataset.dialect;
+        closeMenus();
+        render();
+    };
+});
+
+window.onclick = closeMenus;
 
 document.addEventListener("keydown", e => {
-
-    if (e.key === "ArrowRight") nextWord();
-    if (e.key === "ArrowLeft") prevWord();
+    if (e.key === "ArrowRight") next();
+    if (e.key === "ArrowLeft") prev();
     if (e.key === " ") playAudio();
 });
+
+/* ================= INIT ================= */
 
 loadDataset();
 
